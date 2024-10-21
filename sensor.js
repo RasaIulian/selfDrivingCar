@@ -4,7 +4,7 @@ class Sensor {
     this.car = car;
     this.rayCount = 5; // Number of rays to be cast from the sensor
     this.rayLength = 140; // Length of each ray
-    this.raySpread = Math.PI; // Spread angle of rays (180 degrees)
+    this.raySpread = Math.PI / 2; // Spread angle of rays (180 degrees)
     this.rays = []; // Array to store the rays
     this.readings = []; // Array to store the intersection data for each ray
   }

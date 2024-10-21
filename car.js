@@ -11,6 +11,7 @@ class Car {
     this.friction = 0.03;
     this.angle = 0; // The direction the car is facing
     this.damaged = false; // Damage flag for collisions
+    this.damageFlashCounter = 0; // Counter to handle the flashing effect
     this.useBrain = controlType == "AI"; // Determines if AI is controlling the car
 
     // Add sensor and neural network only if the car is not a dummy
@@ -49,6 +50,10 @@ class Car {
         this.controls.right = outputs[2];
         this.controls.reverse = outputs[3];
       }
+    }
+    // Increment the flash counter when damaged
+    if (this.damaged) {
+      this.damageFlashCounter++;
     }
   }
 
@@ -147,10 +152,14 @@ class Car {
   }
 
   // Draw the car and its sensor (if any) on the canvas
-  draw(ctx, color) {
-    // Set the car color (red if damaged)
+  draw(ctx, color, drawSensor = false) {
+    // Toggle between red and original color every few frames
+    const flash =
+      this.damageFlashCounter % 30 < 5 ? "rgba(125,125,125,0.5)" : color;
+
+    // Set the car flash color if damaged
     if (this.damaged) {
-      ctx.fillStyle = "red";
+      ctx.fillStyle = flash;
     } else {
       ctx.fillStyle = color;
     }
@@ -163,8 +172,8 @@ class Car {
     }
     ctx.fill(); // Fill the car shape with color
 
-    // Draw the car's sensor (if it has one)
-    if (this.sensor) {
+    // Draw only the first car's sensor
+    if (this.sensor && drawSensor) {
       this.sensor.draw(ctx);
     }
   }

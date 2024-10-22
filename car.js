@@ -1,5 +1,13 @@
 class Car {
-  constructor(x, y, width, height, controlType, maxSpeed = 3) {
+  constructor(
+    x,
+    y,
+    width,
+    height,
+    controlType,
+    maxSpeed = 3,
+    color = "lightgreen"
+  ) {
     // Initialize car's position, size, speed, and properties
     this.x = x;
     this.y = y;
@@ -22,6 +30,22 @@ class Car {
     }
     // Set up controls (manual or AI) based on controlType
     this.controls = new Controls(controlType);
+    this.img = new Image();
+    this.img.src = "img/car.png";
+
+    this.mask = document.createElement("canvas");
+    this.mask.width = width;
+    this.mask.height = height;
+
+    const maskCtx = this.mask.getContext("2d");
+    this.img.onload = () => {
+      maskCtx.fillStyle = color;
+      maskCtx.rect(0, 0, this.width, this.height);
+      maskCtx.fill();
+
+      maskCtx.globalCompositeOperation = "destination-atop";
+      maskCtx.drawImage(this.img, 0, 0, this.width, this.height);
+    };
   }
 
   // Update car position, sensor data, and check for damage
@@ -77,7 +101,7 @@ class Car {
   // Create a polygon shape representing the car (used for collision detection)
   #createPolygon() {
     const points = [];
-    const rad = Math.hypot(this.width, this.height / 2); // Radius for the corners
+    const rad = Math.hypot(this.width / 2, this.height / 2); // Radius for the corners
     const alpha = Math.atan2(this.width, this.height); // Angle for the car's shape
 
     // Calculate the four corners of the car based on the angle and position
@@ -152,29 +176,33 @@ class Car {
   }
 
   // Draw the car and its sensor (if any) on the canvas
-  draw(ctx, color, drawSensor = false) {
-    // Toggle between red and original color every few frames
-    const flash =
-      this.damageFlashCounter % 30 < 5 ? "rgba(125,125,125,0.5)" : color;
-
-    // Set the car flash color if damaged
-    if (this.damaged) {
-      ctx.fillStyle = flash;
-    } else {
-      ctx.fillStyle = color;
-    }
-
-    // Draw the car polygon
-    ctx.beginPath();
-    ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
-    for (let i = 1; i < this.polygon.length; i++) {
-      ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
-    }
-    ctx.fill(); // Fill the car shape with color
-
+  draw(ctx, drawSensor = false) {
     // Draw only the first car's sensor
     if (this.sensor && drawSensor) {
       this.sensor.draw(ctx);
     }
+
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(-this.angle);
+    if (!this.damaged) {
+      ctx.drawImage(
+        this.mask,
+        -this.width / 2,
+        -this.height / 2,
+        this.width,
+        this.height
+      );
+      ctx.globalCompositeOperation = "multiply";
+    }
+    ctx.drawImage(
+      this.img,
+      -this.width / 2,
+      -this.height / 2,
+      this.width,
+      this.height
+    );
+
+    ctx.restore();
   }
 }

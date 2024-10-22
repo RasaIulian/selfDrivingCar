@@ -69,3 +69,15 @@ function getRGBA(value) {
   // Return the computed RGBA color string.
   return "rgba(" + R + "," + G + "," + B + "," + alpha + ")";
 }
+
+function getRandomColor() {
+  // Generate a hue between 0 and 300
+  let hue = Math.random() * 300;
+
+  // Add 120° to skip the green range if the hue is above 60°
+  if (hue > 60) {
+    hue += 120;
+  }
+
+  return `hsl(${hue}, 100%, 60%)`; // Full saturation, lightness 60%;
+}

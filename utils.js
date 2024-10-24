@@ -59,15 +59,16 @@ function polysIntersect(poly1, poly2) {
 // Generates an RGBA color string based on the given value.
 // The value affects the transparency (alpha) and color. Positive values result in yellow, negative values result in red.
 function getRGBA(value) {
-  const alpha = Math.abs(value); // Alpha (transparency) is determined by the absolute value of 'value'.
-  // Red component is full (255) for negative values and decreases with positive values.
-  const R = value > 0 ? 255 : 255 * Math.abs(value);
-  // Green component is full (255) for positive values (making yellow), and 0 for negative values.
-  const G = value > 0 ? 255 : 0;
-  const B = 0; // Blue component is always 0 (no blue in this color model).
+  const alpha = Math.abs(value); // Alpha (transparency) based on absolute value
 
-  // Return the computed RGBA color string.
-  return "rgba(" + R + "," + G + "," + B + "," + alpha + ")";
+  if (value > 0) {
+    // For positive values: Yellow (255, 255, 0)
+    return `rgba(255, 255, 0, ${alpha})`;
+  } else {
+    // For negative values and zero: Red (255, 0, 0)
+    // Note: When value is 0, alpha will be 0, making it fully transparent
+    return `rgba(255, 0, 0, ${alpha})`;
+  }
 }
 
 function getRandomColor() {
@@ -79,5 +80,5 @@ function getRandomColor() {
     hue += 120;
   }
 
-  return `hsl(${hue}, 100%, 60%)`; // Full saturation, lightness 60%;
+  return `hsl(${hue}, 100%, 70%)`; // Full saturation, lightness 60%;
 }

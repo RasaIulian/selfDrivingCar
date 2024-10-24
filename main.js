@@ -6,13 +6,16 @@ carCanvas.width = 300; // Set the width of the car canvas
 const networkCanvas = document.getElementById("networkCanvas");
 networkCanvas.width = 400; // Set the width of the network canvas
 
+// Declare the 'cars' array globally but don't initialize yet
+let cars;
+
 // Get input elements
 const carsNumberInput = document.getElementById("carsNumber");
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
 let carsNumber = parseInt(carsNumberInput.value) || 100;
-let mutationLevel = parseFloat(mutationLevelInput.value) || 0.2;
+let mutationLevel = parseFloat(mutationLevelInput.value) || 0.3;
 
 // Create 2D drawing contexts for both canvases
 const carCtx = carCanvas.getContext("2d");
@@ -21,14 +24,15 @@ const networkCtx = networkCanvas.getContext("2d");
 // Initialize the road with the center and width (90% of the canvas width)
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
-// Create cars array (controlled by "AI" or manual "KEYS")
-// Cars are placed in a lane with given x, y, width, and height
+// Generate cars based on AI state
 function generateCars(N) {
-  const cars = [];
+  const carsArray = [];
   for (let i = 0; i <= N; i++) {
-    cars.push(new Car(road.getLaneCenter(2), 100, 60, 100, "AI"));
+    carsArray.push(
+      new Car(road.getLaneCenter(2), 100, 60, 100, aiEnabled ? "AI" : "KEYS")
+    );
   }
-  return cars;
+  return carsArray;
 }
 
 // Load saved values from LocalStorage
@@ -38,12 +42,7 @@ function loadFromLocalStorage() {
 
   // Set default values if nothing is found in localStorage
   carsNumberInput.value = savedCarsNumber ? savedCarsNumber : 200; // Default to 200 cars
-  mutationLevelInput.value = savedMutationLevel ? savedMutationLevel : 0.2; // Default to 20% mutation level
-
-  // Update the mutation display to show in percentage
-  mutationLevelInput.textContent = `${Math.round(
-    mutationLevelInput.value * 100
-  )}%`;
+  mutationLevelInput.value = savedMutationLevel ? savedMutationLevel : 0.3; // Default to 30% mutation level
 
   // Update the variables with the values from input
   carsNumber = parseInt(carsNumberInput.value);
@@ -52,24 +51,22 @@ function loadFromLocalStorage() {
 
 // Load values from LocalStorage when the page loads
 loadFromLocalStorage();
-
-// generate N cars
+// Initialize 'cars' after generating them
 let N = carsNumber;
-let cars = generateCars(N - 1);
+cars = generateCars(N - 1);
 let bestCar = cars[0]; // Initialize bestCar
 
 // Event listeners to update values on change
 carsNumberInput.addEventListener("input", () => {
   carsNumber = parseInt(carsNumberInput.value) || 200; // Update and default to 200 if empty
   localStorage.setItem("carsNumber", carsNumber); // Store in LocalStorage
-  mutationLevelInput.textContent = `${Math.round(mutationLevel * 100)}%`; // Update percentage display
   console.log(
     `Updated number of cars: ${carsNumber}. Press retry to update page`
   );
 });
 
 mutationLevelInput.addEventListener("input", () => {
-  mutationLevel = parseFloat(mutationLevelInput.value) || 0.2; // Update and default to 0.2 if empty
+  mutationLevel = parseFloat(mutationLevelInput.value) || 0.3; // Update and default to 0.3=30% if empty
   localStorage.setItem("mutationLevel", mutationLevel); // Store in LocalStorage
   console.log(
     `Updated mutation level: ${mutationLevel}. Press retry to update page`
@@ -85,8 +82,6 @@ const traffic = [
   new Car(road.getLaneCenter(0), -1450, 60, 100, "DUMMY", 2, getRandomColor()),
 ];
 
-// Start the animation loop
-animate();
 // save best car brain
 function save() {
   localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
@@ -116,8 +111,22 @@ if (localStorage.getItem("bestBrain")) {
   console.log("Car brain loaded from LocalStorage");
 }
 
+function updateCarControls() {
+  cars.forEach((car) => {
+    const oldControlType = car.controlType;
+    car.controlType = aiEnabled ? "AI" : "KEYS";
+    car.useBrain = aiEnabled;
+
+    // Reset move forward when switching from AI to KEYS
+    if (oldControlType !== car.controlType && oldControlType == "AI") {
+      car.controls.forward = false;
+    }
+  });
+}
+
 // Function to handle animation and updates
 function animate(time) {
+  updateCarControls();
   // Update the position of traffic cars
   for (let i = 0; i < traffic.length; i++) {
     traffic[i].update(road.borders, []); // Update based on road borders
@@ -161,3 +170,6 @@ function animate(time) {
   // Request the next frame of animation
   requestAnimationFrame(animate);
 }
+
+// Start the animation loop
+animate();

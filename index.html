@@ -11,22 +11,25 @@
     <div id="verticalButtons">
       <button onclick="location.reload()" title="Retry">🔄</button>
       <button onclick="save()" title="Save Car">💾</button>
-      <button onclick="deleteData()" title="Delete saved data">💥</button>
-      <label title="Cars Number" for="carsNumber">
-        🚗
+      <button onclick="deleteData()" title="Delete saved car">💥</button>
+      <label title="Cars" for="carsNumber">
+        🚘
         <input name="carsNumber" type="number" id="carsNumber" />
       </label>
       <label title="Neural Network mutation level" for="networkMutation">
         🧬
         <input id="networkMutation" type="number" step="0.1" />
       </label>
+      <button id="toggleAI" title="Toggle AI On/Off"></button>
     </div>
     <canvas id="networkCanvas"></canvas>
+
     <script src="visualizer.js"></script>
     <script src="network.js"></script>
     <script src="sensor.js"></script>
     <script src="utils.js"></script>
     <script src="road.js"></script>
+    <script src="aiToggle.js"></script>
     <script src="controls.js"></script>
     <script src="car.js"></script>
     <script src="main.js"></script>

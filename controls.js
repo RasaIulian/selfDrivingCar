@@ -1,64 +1,57 @@
 class Controls {
   constructor(type) {
-    // Initialize control states (forward, left, right, reverse) as false
     this.forward = false;
     this.left = false;
     this.right = false;
     this.reverse = false;
 
-    // Determine the type of control
     switch (type) {
       case "KEYS":
-        // If "KEYS", set up keyboard listeners for manual control
         this.#addKeyboardListeners();
+
         break;
       case "DUMMY":
-        // If "DUMMY", set forward movement to true by default
         this.forward = true;
         break;
     }
   }
 
-  // Private method to add keyboard event listeners
   #addKeyboardListeners() {
-    // Handle key press (keydown) events
     document.onkeydown = (event) => {
       switch (event.key) {
         case "ArrowLeft":
-          this.left = true; // Turn left
+          this.left = true;
           break;
         case "ArrowRight":
-          this.right = true; // Turn right
+          this.right = true;
           break;
         case "ArrowUp":
-          this.forward = true; // Move forward
+          this.forward = true;
           break;
         case "ArrowDown":
-          this.reverse = true; // Move in reverse
+          this.reverse = true;
           break;
       }
-      // Uncomment to log control states for debugging
-      // console.table(this);
+      //   test controls
+      //   console.table(this);
     };
-
-    // Handle key release (keyup) events
     document.onkeyup = (event) => {
       switch (event.key) {
         case "ArrowLeft":
-          this.left = false; // Stop turning left
+          this.left = false;
           break;
         case "ArrowRight":
-          this.right = false; // Stop turning right
+          this.right = false;
           break;
         case "ArrowUp":
-          this.forward = false; // Stop moving forward
+          this.forward = false;
           break;
         case "ArrowDown":
-          this.reverse = false; // Stop moving in reverse
+          this.reverse = false;
           break;
       }
-      // Uncomment to log control states for debugging
-      // console.table(this);
+      //   test controls
+      //   console.table(this);
     };
   }
 }

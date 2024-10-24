@@ -22,9 +22,12 @@ input {
   transition: all 0.3s;
   text-align: center;
   max-width: 90%;
+  font-size: 1rem;
+  color: rgb(71, 71, 71);
 }
 button:hover {
-  background: rgb(12, 12, 12);
+  background: rgb(71, 71, 71);
+  color: lightgrey;
 }
 #carCanvas {
   background: lightgrey;

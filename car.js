@@ -20,6 +20,7 @@ class Car {
     this.angle = 0; // The direction the car is facing
     this.damaged = false; // Damage flag for collisions
     this.damageFlashCounter = 0; // Counter to handle the flashing effect
+
     this.useBrain = controlType == "AI"; // Determines if AI is controlling the car
 
     // Add sensor and neural network only if the car is not a dummy
@@ -30,6 +31,7 @@ class Car {
     }
     // Set up controls (manual or AI) based on controlType
     this.controls = new Controls(controlType);
+
     this.img = new Image();
     this.img.src = "img/car.png";
 
@@ -163,10 +165,10 @@ class Car {
 
       // Turn left or right based on controls and direction of movement
       if (this.controls.left) {
-        this.angle += 0.03 * flip;
+        this.angle += 0.01 * flip;
       }
       if (this.controls.right) {
-        this.angle -= 0.03 * flip;
+        this.angle -= 0.01 * flip;
       }
     }
 

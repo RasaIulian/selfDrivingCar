@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="infoBox" class="hidden"></div>
     <canvas id="carCanvas"></canvas>
     <div id="verticalButtons">
       <button onclick="location.reload()" title="Retry">🔄</button>
       <button onclick="save()" title="Save Car">💾</button>
       <button onclick="deleteData()" title="Delete saved car">💥</button>
+      <button id="toggleAI" title="Toggle AI On/Off"></button>
       <label title="Cars" for="carsNumber">
         🚘
         <input name="carsNumber" type="number" id="carsNumber" />
@@ -20,10 +22,9 @@
         🧬
         <input id="networkMutation" type="number" step="0.1" />
       </label>
-      <button id="toggleAI" title="Toggle AI On/Off"></button>
     </div>
     <canvas id="networkCanvas"></canvas>
-
+    <script src="infoBox.js"></script>
     <script src="visualizer.js"></script>
     <script src="network.js"></script>
     <script src="sensor.js"></script>

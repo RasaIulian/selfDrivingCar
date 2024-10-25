@@ -50,7 +50,7 @@ class Visualizer {
         // Draw a line from the input node to the output node.
         ctx.moveTo(Visualizer.#getNodeX(inputs, i, left, right), bottom);
         ctx.lineTo(Visualizer.#getNodeX(outputs, j, left, right), top);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         // Set stroke color based on the weight value.
         ctx.strokeStyle = getRGBA(weights[i][j]);
         ctx.stroke();
@@ -86,7 +86,7 @@ class Visualizer {
 
       // Draw the bias as a dashed outer ring around the output node.
       ctx.beginPath();
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3;
       ctx.arc(x, top, nodeRadius * 0.8, 0, Math.PI * 2); // Bias ring
       ctx.strokeStyle = getRGBA(biases[i]);
       ctx.setLineDash([10, 5]); // Dashed line for bias.

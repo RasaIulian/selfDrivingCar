@@ -95,27 +95,38 @@ class Sensor {
   }
 
   // Draw the rays on the canvas
+  // Draw the rays on the canvas
   draw(ctx) {
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.rays[i][1]; // Default end point of the ray
+      let color = "yellow"; // Default yellow color for the detected part
+
       if (this.readings[i]) {
-        end = this.readings[i]; // If there's a reading, use the intersection point
+        end = this.readings[i]; // Intersection point as end if detected
+
+        // **Offset ray endpoint slightly back from the intersection point**
+        const dx = this.rays[i][1].x - this.rays[i][0].x;
+        const dy = this.rays[i][1].y - this.rays[i][0].y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        const offsetDistance = 3; // Offset to prevent overlap on road borders; depends on border width
+
+        // Calculate the offset end position
+        end = {
+          x: end.x - (dx / length) * offsetDistance,
+          y: end.y - (dy / length) * offsetDistance,
+        };
+
+        // ** Add flash effect by toggling opacity **
+        const flashOpacity = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
+        color = `rgba(255, 255, 0, ${flashOpacity})`; // Yellow with flashing effect
       }
 
-      // Draw the ray from the car to the detected object or its full length
+      // Draw the ray from the car to the detected object or its limited length
       ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "yellow"; // Yellow part of the ray (valid detection)
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = color;
       ctx.moveTo(this.rays[i][0].x, this.rays[i][0].y);
-      ctx.lineTo(end.x, end.y);
-      ctx.stroke();
-
-      // Draw the remainder of the ray (if it didn't detect anything)
-      ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(255,0,0,0.1)"; // Faded red for missed part
-      ctx.moveTo(this.rays[i][1].x, this.rays[i][1].y);
-      ctx.lineTo(end.x, end.y);
+      ctx.lineTo(end.x, end.y); // Updated to use the offset end point
       ctx.stroke();
     }
   }

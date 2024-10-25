@@ -5,11 +5,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 #verticalButtons {
   display: flex;
   flex-direction: column;
-  width: 60px;
+  width: 95px;
+  align-items: center;
 }
 button,
 label,
@@ -17,10 +19,11 @@ input {
   border: none;
   border-radius: 5px;
   padding: 5px, 5px, 7px, 5px;
-  margin: 2px;
+  margin: 3px;
   cursor: pointer;
   transition: all 0.3s;
   text-align: center;
+  width: 80px;
   max-width: 90%;
   font-size: 1rem;
   color: rgb(71, 71, 71);
@@ -34,4 +37,23 @@ button:hover {
 }
 #networkCanvas {
   background: rgb(12, 12, 12);
+}
+#infoBox {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 200px;
+  height: auto;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  z-index: 1000;
+  z-index: 1000;
+  transition: opacity 1s ease-in-out;
+}
+
+.hidden {
+  opacity: 0;
 }

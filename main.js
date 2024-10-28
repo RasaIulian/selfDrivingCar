@@ -14,7 +14,7 @@ const carsNumberInput = document.getElementById("carsNumber");
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
-let carsNumber = parseInt(carsNumberInput.value) || 100;
+let carsNumber = parseInt(carsNumberInput.value) || 500;
 let mutationLevel = parseFloat(mutationLevelInput.value) || 0.3;
 
 // Create 2D drawing contexts for both canvases

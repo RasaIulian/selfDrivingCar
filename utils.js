@@ -80,5 +80,5 @@ function getRandomColor() {
     hue += 120;
   }
 
-  return `hsl(${hue}, 100%, 70%)`; // Full saturation, lightness 60%;
+  return `hsl(${hue}, 30%, 65%)`; // saturation %, lightness %;
 }

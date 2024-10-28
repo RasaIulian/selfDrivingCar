@@ -47,7 +47,7 @@ class Road {
     for (let i = 1; i <= this.laneCount - 1; i++) {
       const x = lerp(this.left, this.right, i / this.laneCount); // Get position for each lane divider
 
-      ctx.setLineDash([20, 20]); // Set dash pattern for lane lines
+      ctx.setLineDash([40, 40]); // Set dash pattern for lane lines
       ctx.beginPath();
       ctx.moveTo(x, this.top); // Start lane line at the top
       ctx.lineTo(x, this.bottom); // Draw lane line to the bottom

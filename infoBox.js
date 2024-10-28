@@ -24,16 +24,3 @@ console.log = function (message) {
     infoBox.classList.add("hidden"); // Apply fade-out effect
   }, 5000);
 };
-
-// Display the last message from localStorage on page load
-window.addEventListener("load", () => {
-  const latestMessage = localStorage.getItem("latestMessage");
-  if (latestMessage) {
-    infoBox.innerHTML = latestMessage;
-    // Show infoBox briefly before applying hidden class
-    infoBox.classList.remove("hidden");
-    setTimeout(() => {
-      infoBox.classList.add("hidden");
-    }, 5000);
-  }
-});

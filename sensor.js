@@ -3,8 +3,8 @@ class Sensor {
     // Attach the sensor to the car
     this.car = car;
     this.rayCount = 5; // Number of rays to be cast from the sensor
-    this.rayLength = 140; // Length of each ray
-    this.raySpread = Math.PI / 2; // Spread angle of rays (180 degrees)
+    this.rayLength = 150; // Length of each ray
+    this.raySpread = Math.PI / 2; // Spread angle of rays
     this.rays = []; // Array to store the rays
     this.readings = []; // Array to store the intersection data for each ray
   }
@@ -76,8 +76,8 @@ class Sensor {
           this.rayCount == 1 ? 0.5 : i / (this.rayCount - 1) // Evenly distribute rays
         ) + this.car.angle; // Adjust with car's current angle
 
-      // Calculate the ray's start position (a bit offset from the car's center)
-      const rayOffset = 20;
+      // Calculate the ray's start position (offset from the car's center)
+      const rayOffset = 0;
       const start = {
         x: this.car.x - Math.sin(this.car.angle) * rayOffset,
         y: this.car.y - Math.cos(this.car.angle) * rayOffset,
@@ -95,11 +95,10 @@ class Sensor {
   }
 
   // Draw the rays on the canvas
-  // Draw the rays on the canvas
   draw(ctx) {
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.rays[i][1]; // Default end point of the ray
-      let color = "yellow"; // Default yellow color for the detected part
+      let color = "rgba(255,255,0,0.5)"; // Default yellow color for the detected part
 
       if (this.readings[i]) {
         end = this.readings[i]; // Intersection point as end if detected
@@ -108,7 +107,7 @@ class Sensor {
         const dx = this.rays[i][1].x - this.rays[i][0].x;
         const dy = this.rays[i][1].y - this.rays[i][0].y;
         const length = Math.sqrt(dx * dx + dy * dy);
-        const offsetDistance = 3; // Offset to prevent overlap on road borders; depends on border width
+        const offsetDistance = 0; // Offset to prevent overlap on road borders; depends on border width
 
         // Calculate the offset end position
         end = {

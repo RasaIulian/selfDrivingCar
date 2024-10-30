@@ -21,7 +21,7 @@ class Visualizer {
           network.levels.length == 1 ? 0.5 : i / (network.levels.length - 1)
         );
 
-      ctx.setLineDash([50, 8]); // Set dashed lines for visual effect
+      // ctx.setLineDash([50, 8]); // Set dashed lines for visual effect
       // Draw the current level, passing input and output labels for the last level.
       Visualizer.drawLevel(
         ctx,
@@ -64,7 +64,7 @@ class Visualizer {
       const x = Visualizer.#getNodeX(inputs, i, left, right);
       ctx.beginPath();
       ctx.arc(x, bottom, nodeRadius, 0, Math.PI * 2); // Outer circle
-      ctx.fillStyle = "rgba(125,125,125,0.1)"; // Light gray for outer ring
+      ctx.fillStyle = "rgba(125,125,125,0.3)"; // Light gray for outer ring
       ctx.fill();
       ctx.beginPath();
       ctx.arc(x, bottom, nodeRadius * 0.6, 0, Math.PI * 2); // Inner circle
@@ -77,7 +77,7 @@ class Visualizer {
       const x = Visualizer.#getNodeX(outputs, i, left, right);
       ctx.beginPath();
       ctx.arc(x, top, nodeRadius, 0, Math.PI * 2); // Outer circle
-      ctx.fillStyle = "rgba(125,125,125,0.05)"; // Light gray for outer ring
+      ctx.fillStyle = "black"; // Light gray for outer ring
       ctx.fill();
       ctx.beginPath();
       ctx.arc(x, top, nodeRadius * 0.6, 0, Math.PI * 2); // Inner circle
@@ -89,9 +89,9 @@ class Visualizer {
       ctx.lineWidth = 3;
       ctx.arc(x, top, nodeRadius * 0.8, 0, Math.PI * 2); // Bias ring
       ctx.strokeStyle = getRGBA(biases[i]);
-      ctx.setLineDash([10, 5]); // Dashed line for bias.
+      // ctx.setLineDash([10, 5]); // Dashed line for bias.
       ctx.stroke();
-      ctx.setLineDash([]);
+      // ctx.setLineDash([]);
 
       // Draw the label (if provided) on the output node.
       if (outputLabels[i]) {

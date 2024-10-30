@@ -10,7 +10,7 @@ class Road {
     this.right = x + width / 2;
 
     // Set the road's top and bottom boundaries (with large values to simulate infinity)
-    const infinity = 1000000;
+    const infinity = 10000;
     this.top = -infinity; // Top boundary (negative infinity for upward)
     this.bottom = infinity; // Bottom boundary (infinity for downward)
 

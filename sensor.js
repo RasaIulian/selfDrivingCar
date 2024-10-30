@@ -3,7 +3,7 @@ class Sensor {
     // Attach the sensor to the car
     this.car = car;
     this.rayCount = 5; // Number of rays to be cast from the sensor
-    this.rayLength = 150; // Length of each ray
+    this.rayLength = 250; // Length of each ray
     this.raySpread = Math.PI / 2; // Spread angle of rays
     this.rays = []; // Array to store the rays
     this.readings = []; // Array to store the intersection data for each ray
@@ -98,7 +98,7 @@ class Sensor {
   draw(ctx) {
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.rays[i][1]; // Default end point of the ray
-      let color = "rgba(255,255,0,0.5)"; // Default yellow color for the detected part
+      let color = "rgba(255,255,0,0.3)"; // Default yellow color for the detected part
 
       if (this.readings[i]) {
         end = this.readings[i]; // Intersection point as end if detected
@@ -116,8 +116,8 @@ class Sensor {
         };
 
         // ** Add flash effect by toggling opacity **
-        const flashOpacity = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
-        color = `rgba(255, 255, 0, ${flashOpacity})`; // Yellow with flashing effect
+        // const flashOpacity = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
+        color = `rgba(255, 255, 0, 1)`; // Yellow
       }
 
       // Draw the ray from the car to the detected object or its limited length

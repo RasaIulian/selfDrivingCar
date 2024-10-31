@@ -14,8 +14,8 @@ const carsNumberInput = document.getElementById("carsNumber");
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
-let carsNumber = parseInt(carsNumberInput.value) || 500;
-let mutationLevel = parseFloat(mutationLevelInput.value) || 0.3;
+let carsNumber = parseInt(carsNumberInput.value) ?? 1000;
+let mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
 
 // Create 2D drawing contexts for both canvases
 const carCtx = carCanvas.getContext("2d");
@@ -41,8 +41,8 @@ function loadFromLocalStorage() {
   const savedMutationLevel = localStorage.getItem("mutationLevel");
 
   // Set default values if nothing is found in localStorage
-  carsNumberInput.value = savedCarsNumber ? savedCarsNumber : 200; // Default to 200 cars
-  mutationLevelInput.value = savedMutationLevel ? savedMutationLevel : 0.3; // Default to 30% mutation level
+  carsNumberInput.value = savedCarsNumber ? savedCarsNumber : 500; // Default cars nr
+  mutationLevelInput.value = savedMutationLevel ? savedMutationLevel : 30; // Default mutation level
 
   // Update the variables with the values from input
   carsNumber = parseInt(carsNumberInput.value);
@@ -58,18 +58,19 @@ let bestCar = cars[0]; // Initialize bestCar
 
 // Event listeners to update values on change
 carsNumberInput.addEventListener("input", () => {
-  carsNumber = parseInt(carsNumberInput.value) || 200; // Update and default to 200 if empty
+  carsNumber = parseInt(carsNumberInput.value) ?? 200; // Update and default to 200 if empty
   localStorage.setItem("carsNumber", carsNumber); // Store in LocalStorage
   console.log(
-    `Updated number of cars: ${carsNumber}. Press retry to update page`
+    `Updated cars number: ${carsNumber}. <br>Press retry to update page`
   );
 });
 
 mutationLevelInput.addEventListener("input", () => {
-  mutationLevel = parseFloat(mutationLevelInput.value) || 0.3; // Update and default to 0.3=30% if empty
+  mutationLevel = parseFloat(mutationLevelInput.value) ?? 30; // Update and default to 0.3=30% if empty
   localStorage.setItem("mutationLevel", mutationLevel); // Store in LocalStorage
+  // Update the percentage display for the input (if using a span like in the previous example)
   console.log(
-    `Updated mutation level: ${mutationLevel}. Press retry to update page`
+    `Updated network mutation level: ${mutationLevel.toFixed()}%. <br>Press retry to update page`
   );
 });
 
@@ -85,7 +86,7 @@ const traffic = [
 // save best car brain
 function save() {
   localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
-  console.log("New car brain saved to LocalStorage");
+  console.log("New car brain saved to localStorage");
 }
 
 // delete saved brain, carsNumber and NetworkMutation level from localStorage
@@ -104,7 +105,10 @@ if (localStorage.getItem("bestBrain")) {
   for (let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
     if (i != 0) {
-      neuralNetwork.mutate(cars[i].brain, mutationLevel); /*0.1 = 10% mutation*/
+      neuralNetwork.mutate(
+        cars[i].brain,
+        mutationLevel / 100
+      ); /*0.1 = 10% mutation*/
     }
   }
 

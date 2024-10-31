@@ -72,13 +72,12 @@ function getRGBA(value) {
 }
 
 function getRandomColor() {
-  // Generate a hue between 0 and 300
-  let hue = Math.random() * 300;
+  let hue = Math.random() * 360;
 
-  // Add 120° to skip the green range if the hue is above 60°
-  if (hue > 60) {
-    hue += 120;
+  if (hue > 65 && hue < 170) {
+    // Skip actual green range
+    hue += 105; // Or different offset based on desired colors
   }
 
-  return `hsl(${hue}, 30%, 65%)`; // saturation %, lightness %;
+  return `hsl(${hue}, 60%, 65%)`;
 }

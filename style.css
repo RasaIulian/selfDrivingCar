@@ -18,7 +18,7 @@ label,
 input {
   border: none;
   border-radius: 5px;
-  padding: 5px, 5px, 7px, 5px;
+  padding: 5px 5px 7px 5px;
   margin: 3px;
   cursor: pointer;
   transition: all 0.3s;
@@ -28,10 +28,16 @@ input {
   font-size: 1rem;
   color: rgb(71, 71, 71);
 }
+input,
+label {
+  padding: 1px;
+  background: #f0f0f0;
+}
 button:hover {
   background: rgb(71, 71, 71);
   color: lightgrey;
 }
+
 #carCanvas {
   background: lightgrey;
 }

@@ -27,7 +27,7 @@ const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 // Generate cars based on AI state
 function generateCars(N) {
   const carsArray = [];
-  for (let i = 0; i <= N; i++) {
+  for (let i = 1; i <= N; i++) {
     carsArray.push(
       new Car(road.getLaneCenter(2), 100, 60, 120, aiEnabled ? "AI" : "KEYS")
     );
@@ -53,7 +53,7 @@ function loadFromLocalStorage() {
 loadFromLocalStorage();
 // Initialize 'cars' after generating them
 let N = carsNumber;
-cars = generateCars(N - 1);
+cars = generateCars(N);
 let bestCar = cars[0]; // Initialize bestCar
 
 // Event listeners to update values on change
@@ -120,9 +120,9 @@ function updateCarControls() {
     const oldControlType = car.controlType;
     car.controlType = aiEnabled ? "AI" : "KEYS";
     car.useBrain = aiEnabled;
-
+    car.controls.updateControlType(car.controlType);
     // Reset move forward when switching from AI to KEYS
-    if (oldControlType !== car.controlType && oldControlType == "AI") {
+    if (oldControlType !== car.controlType && oldControlType === "AI") {
       car.controls.forward = false;
     }
   });

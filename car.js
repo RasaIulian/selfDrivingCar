@@ -26,7 +26,7 @@ class Car {
     // Add sensor and neural network only if the car is not a dummy
     if (controlType != "DUMMY") {
       this.sensor = new Sensor(this);
-      // Create a neural network with layers (sensor rays, 6 neurons, 4 outputs)
+      // Create a neural network with layers (sensor rays, neurons, outputs)
       this.brain = new neuralNetwork([this.sensor.rayCount, 6, 4]);
     }
     // Set up controls (manual or AI) based on controlType

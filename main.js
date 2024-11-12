@@ -58,7 +58,7 @@ let bestCar = cars[0]; // Initialize bestCar
 
 // Event listeners to update values on change
 carsNumberInput.addEventListener("input", () => {
-  carsNumber = parseInt(carsNumberInput.value) ?? 200; // Update and default to 200 if empty
+  carsNumber = parseInt(carsNumberInput.value) ?? 500; // Update and default to 500 if empty
   localStorage.setItem("carsNumber", carsNumber); // Store in LocalStorage
   console.log(
     `Updated cars number: ${carsNumber}. <br>Press retry to update page`
@@ -85,25 +85,25 @@ const traffic = [
 
 // save best car brain
 function save() {
-  localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
-  console.log("New car brain saved to localStorage");
+  localStorage.setItem("carBrain", JSON.stringify(bestCar.brain));
+  console.log("New car brain saved");
 }
 
 // delete saved brain, carsNumber and NetworkMutation level from localStorage
 
 function deleteData() {
-  const keysToDelete = ["bestBrain" /*, "carsNumber", "mutationLevel"*/];
+  const keysToDelete = ["carBrain" /*, "carsNumber", "mutationLevel"*/];
 
   keysToDelete.forEach((key) => {
     localStorage.removeItem(key);
-    console.log(`${key} deleted from LocalStorage`);
+    console.log(`${key} deleted`);
   });
 }
 
 // get brain from local storage and mutate all cars not first
-if (localStorage.getItem("bestBrain")) {
+if (localStorage.getItem("carBrain")) {
   for (let i = 0; i < cars.length; i++) {
-    cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+    cars[i].brain = JSON.parse(localStorage.getItem("carBrain"));
     if (i != 0) {
       neuralNetwork.mutate(
         cars[i].brain,
@@ -112,7 +112,7 @@ if (localStorage.getItem("bestBrain")) {
     }
   }
 
-  console.log("Car brain loaded from LocalStorage");
+  console.log("Saved car brain loaded");
 }
 
 function updateCarControls() {

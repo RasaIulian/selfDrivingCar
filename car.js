@@ -35,18 +35,32 @@ class Car {
     this.img = new Image();
     this.img.src = "img/car.png";
 
-    this.mask = document.createElement("canvas");
-    this.mask.width = width;
-    this.mask.height = height;
+    this.normalMask = document.createElement("canvas");
+    this.normalMask.width = width;
+    this.normalMask.height = height;
 
-    const maskCtx = this.mask.getContext("2d");
+    this.damageMask = document.createElement("canvas");
+    this.damageMask.width = width;
+    this.damageMask.height = height;
+
+    // Create normal color mask
+    const normalCtx = this.normalMask.getContext("2d");
     this.img.onload = () => {
-      maskCtx.fillStyle = color;
-      maskCtx.rect(0, 0, this.width, this.height);
-      maskCtx.fill();
+      normalCtx.fillStyle = color;
+      normalCtx.rect(0, 0, this.width, this.height);
+      normalCtx.fill();
 
-      maskCtx.globalCompositeOperation = "destination-atop";
-      maskCtx.drawImage(this.img, 0, 0, this.width, this.height);
+      normalCtx.globalCompositeOperation = "destination-atop";
+      normalCtx.drawImage(this.img, 0, 0, this.width, this.height);
+
+      // Create damage color mask
+      const damageCtx = this.damageMask.getContext("2d");
+      damageCtx.fillStyle = "tomato";
+      damageCtx.rect(0, 0, this.width, this.height);
+      damageCtx.fill();
+
+      damageCtx.globalCompositeOperation = "destination-atop";
+      damageCtx.drawImage(this.img, 0, 0, this.width, this.height);
     };
   }
 
@@ -187,16 +201,21 @@ class Car {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(-this.angle);
-    if (!this.damaged) {
-      ctx.drawImage(
-        this.mask,
-        -this.width / 2,
-        -this.height / 2,
-        this.width,
-        this.height
-      );
-      ctx.globalCompositeOperation = "multiply";
-    }
+
+    // Choose the appropriate mask based on damage state
+    const currentMask = this.damaged ? this.damageMask : this.normalMask;
+
+    // Draw the car mask with the color applied
+    ctx.drawImage(
+      currentMask,
+      -this.width / 2,
+      -this.height / 2,
+      this.width,
+      this.height
+    );
+
+    // draw the car image (the color blends with the car's texture using multiply method)
+    ctx.globalCompositeOperation = "multiply";
     ctx.drawImage(
       this.img,
       -this.width / 2,

@@ -13,6 +13,7 @@ body {
   width: 95px;
   align-items: center;
 }
+
 button,
 label,
 input {
@@ -50,14 +51,14 @@ button:hover {
   left: 15px;
   width: 200px;
   height: auto;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 10px;
   font-size: 0.9rem;
   border-radius: 5px;
   z-index: 1000;
   z-index: 1000;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .hidden {

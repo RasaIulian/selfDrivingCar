@@ -14,7 +14,7 @@ const carsNumberInput = document.getElementById("carsNumber");
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
-let carsNumber = parseInt(carsNumberInput.value) ?? 1000;
+let carsNumber = parseInt(carsNumberInput.value) ?? 500;
 let mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
 
 // Create 2D drawing contexts for both canvases
@@ -66,7 +66,7 @@ carsNumberInput.addEventListener("input", () => {
 });
 
 mutationLevelInput.addEventListener("input", () => {
-  mutationLevel = parseFloat(mutationLevelInput.value) ?? 30; // Update and default to 0.3=30% if empty
+  mutationLevel = parseFloat(mutationLevelInput.value) ?? 30; // Update and default to given value if empty
   localStorage.setItem("mutationLevel", mutationLevel); // Store in LocalStorage
   // Update the percentage display for the input (if using a span like in the previous example)
   console.log(
@@ -86,7 +86,7 @@ const traffic = [
 // save best car brain
 function save() {
   localStorage.setItem("carBrain", JSON.stringify(bestCar.brain));
-  console.log("New car brain saved");
+  console.log("New car saved");
 }
 
 // delete saved brain, carsNumber and NetworkMutation level from localStorage
@@ -112,7 +112,7 @@ if (localStorage.getItem("carBrain")) {
     }
   }
 
-  console.log("Saved car brain loaded");
+  console.log("Saved car loaded");
 }
 
 function updateCarControls() {

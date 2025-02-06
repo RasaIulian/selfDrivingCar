@@ -64,6 +64,32 @@ class Car {
     };
   }
 
+  // Change car img
+  changeImage(newSrc) {
+    this.img.src = newSrc;
+    const normalCtx = this.normalMask.getContext("2d");
+    const damageCtx = this.damageMask.getContext("2d");
+
+    this.img.onload = () => {
+      console.log(`Car image changed:  ${newSrc}`);
+      // Redraw normal mask
+      normalCtx.clearRect(0, 0, this.width, this.height);
+      normalCtx.fillStyle = this.color;
+      normalCtx.rect(0, 0, this.width, this.height);
+      normalCtx.fill();
+      normalCtx.globalCompositeOperation = "destination-atop";
+      normalCtx.drawImage(this.img, 0, 0, this.width, this.height);
+
+      // Redraw damage mask
+      damageCtx.clearRect(0, 0, this.width, this.height);
+      damageCtx.fillStyle = "tomato";
+      damageCtx.rect(0, 0, this.width, this.height);
+      damageCtx.fill();
+      damageCtx.globalCompositeOperation = "destination-atop";
+      damageCtx.drawImage(this.img, 0, 0, this.width, this.height);
+    };
+  }
+
   // Update car position, sensor data, and check for damage
   update(roadBorders, traffic) {
     if (!this.damaged) {

@@ -1,7 +1,7 @@
 class Visualizer {
   // Draws the entire neural network on the canvas.
   static drawNetwork(ctx, network) {
-    const margin = 50; // Margin from the edges of the canvas
+    const margin = 30; // Margin from the edges of the canvas
     const left = margin;
     const top = margin;
     const width = ctx.canvas.width - margin * 2; // Total drawable width

@@ -4,7 +4,7 @@ carCanvas.width = 350; // Set the width of the car canvas
 
 // Get the canvas element for drawing the neural network visualization
 const networkCanvas = document.getElementById("networkCanvas");
-networkCanvas.width = 300; // Set the width of the network canvas
+networkCanvas.width = 400; // Set the width of the network canvas
 
 // Declare the 'cars' array globally but don't initialize yet
 let cars;
@@ -25,7 +25,7 @@ const networkCtx = networkCanvas.getContext("2d");
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
 // Add at the top with other constants
-const carImages = ["img/car.png", "img/car2.png"];
+const carImages = ["img/car.png", "img/car3.png"];
 let currentCarIndex = 0;
 
 // Generate cars based on AI state
@@ -132,7 +132,7 @@ function updateCarControls() {
   });
 }
 
-// Add this new function
+// change car Img  
 function changeCar() {
   currentCarIndex = (currentCarIndex + 1) % carImages.length;
   cars.forEach((car) => {
@@ -140,9 +140,9 @@ function changeCar() {
       car.changeImage(carImages[currentCarIndex]);
     }
   });
-  traffic.forEach((car) => {
-    car.changeImage(carImages[currentCarIndex]);
-  });
+  // traffic.forEach((car) => {
+  //   car.changeImage(carImages[currentCarIndex]);
+  // });
 }
 
 // Function to handle animation and updates

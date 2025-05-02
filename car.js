@@ -82,7 +82,7 @@ class Car {
       if (this.controlType !== "DUMMY") { // Check if the car is NOT a traffic car
         if (newSrc === "img/car3.png") {
           this.maxSpeed = 6; // Set new max speed for player/AI car3
-          console.log(`Car updated to Race Car`);
+          console.log(`Car updated to Race Car, speed increased, training adjustments might be needed.`);
         } else {
           // Reset to initial max speed if it's not car3
           this.maxSpeed = this.initialMaxSpeed;

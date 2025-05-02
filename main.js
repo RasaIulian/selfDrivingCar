@@ -98,9 +98,13 @@ function save() {
 function deleteData() {
   const keysToDelete = ["carBrain" /*, "carsNumber", "mutationLevel"*/];
 
-  keysToDelete.forEach((key) => {
-    localStorage.removeItem(key);
-    console.log(`${key} deleted`);
+   keysToDelete.forEach((key) => {
+    // Check if the item exists before trying to remove it
+    if (localStorage.getItem(key)) {
+      localStorage.removeItem(key);
+      console.log(`${key} deleted from localStorage.` + (key === "carBrain" ? ' New training needed on reload.' : ''));
+    }
+    
   });
 }
 

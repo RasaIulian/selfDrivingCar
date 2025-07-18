@@ -11,10 +11,18 @@ let cars;
 
 // Get input elements
 const carsNumberInput = document.getElementById("carsNumber");
+
+// prevent 0 or smaller values type
+carsNumberInput.addEventListener('input', () => {
+    if (carsNumberInput.value < 1) {
+      carsNumberInput.value = 1;
+    }
+  });
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
 let carsNumber = parseInt(carsNumberInput.value) ?? 500;
+
 let mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
 
 // Create 2D drawing contexts for both canvases

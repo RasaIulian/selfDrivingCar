@@ -30,7 +30,7 @@ class Visualizer {
         levelTop,
         width,
         levelHeight,
-        i == network.levels.length - 1 ? ["🠉", "🠈", "🠊", "🠋"] : [] // Arrows as output labels for the final level.
+        i == network.levels.length - 1 ? ["↑", "←", "→", "↓"] : [] // Arrows as output labels for the final level.
       );
     }
   }
@@ -99,11 +99,11 @@ class Visualizer {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = "black";
-        ctx.strokeStyle = "yellow";
-        ctx.font = nodeRadius * 1.5 + "px Arial"; // Font size based on node radius.
-        ctx.fillText(outputLabels[i], x, top + nodeRadius * 0.1); // Fill text with label.
-        ctx.lineWidth = 1;
-        ctx.strokeText(outputLabels[i], x, top + nodeRadius * 0.1); // Outline the text.
+        ctx.strokeStyle = "black";
+        ctx.font = nodeRadius * 0.9 + "px Arial"; // Font size based on node radius.
+        ctx.fillText(outputLabels[i], x, top); // Fill text with label.
+        ctx.lineWidth = 2;
+        ctx.strokeText(outputLabels[i], x, top); // Outline the text.
       }
     }
   }

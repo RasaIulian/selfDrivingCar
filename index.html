@@ -16,15 +16,15 @@
       <button id="toggleAI" title="Toggle AI On/Off"></button>
       <label title="Cars" for="carsNumber">
         🚘
-        <input name="carsNumber" type="number" min="1" id="carsNumber" />
+          <input type="number" id="carsNumber" min="1" value="500">
       </label>
       <label title="Neural Network mutation level" for="networkMutation">
         🧬
         <input id="networkMutation" type="number" min="0" max="100" step="10"> <span 
           >%</span>
-        </label>
+      </label>
       </label>    
-        <button onclick="changeCar()" title="Change car">Change 🚗</button>
+      <button onclick="changeCar()" title="Change car">Change 🚗</button>
 
     </div>
     <canvas id="networkCanvas" title="Neural Network"></canvas>

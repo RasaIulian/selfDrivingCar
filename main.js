@@ -11,19 +11,40 @@ let cars;
 
 // Get input elements
 const carsNumberInput = document.getElementById("carsNumber");
+const carsNumberValueSpan = document.getElementById("carsNumberValue");
 
-// prevent 0 or smaller values type
+
+// prevent 0 or smaller values typed
 carsNumberInput.addEventListener('input', () => {
     if (carsNumberInput.value < 1) {
       carsNumberInput.value = 1;
     }
   });
+
+
 const mutationLevelInput = document.getElementById("networkMutation");
 
 // Initialize variables to store input values
 let carsNumber = parseInt(carsNumberInput.value) ?? 500;
 
 let mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
+
+// prevent negative values typed
+mutationLevelInput.addEventListener('input', () => {
+    if (mutationLevelInput.value < 0) {
+      mutationLevelInput.value = 0;
+    }
+  });
+
+
+mutationLevelInput.addEventListener("input", () => {
+  mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
+  localStorage.setItem("mutationLevel", mutationLevel);
+  console.log(
+    `Mutation level set to: ${mutationLevel}%. Press retry to update app.`
+  );
+});
+
 
 // Create 2D drawing contexts for both canvases
 const carCtx = carCanvas.getContext("2d");
@@ -72,17 +93,9 @@ let bestCar = cars[0]; // Initialize bestCar
 carsNumberInput.addEventListener("input", () => {
   carsNumber = parseInt(carsNumberInput.value) ?? 500; // Update and default to 500 if empty
   localStorage.setItem("carsNumber", carsNumber); // Store in LocalStorage
+  if (carsNumberValueSpan) carsNumberValueSpan.textContent = carsNumber;
   console.log(
-    `Updated cars number: ${carsNumber}. <br>Press retry to update page`
-  );
-});
-
-mutationLevelInput.addEventListener("input", () => {
-  mutationLevel = parseFloat(mutationLevelInput.value) ?? 30; // Update and default to given value if empty
-  localStorage.setItem("mutationLevel", mutationLevel); // Store in LocalStorage
-  // Update the percentage display for the input (if using a span like in the previous example)
-  console.log(
-    `Updated network mutation level: ${mutationLevel.toFixed()}%. <br>Press retry to update page`
+    `Cars number set to: ${carsNumber}. <br>Press retry to update app.`
   );
 });
 
@@ -159,6 +172,7 @@ function changeCar() {
 
 // Function to handle animation and updates
 function animate(time) {
+  
   updateCarControls();
   // Update the position of traffic cars
   for (let i = 0; i < traffic.length; i++) {
@@ -176,6 +190,7 @@ function animate(time) {
   carCanvas.height = window.innerHeight;
   networkCanvas.height = window.innerHeight;
 
+  carCtx.save();
   // Move the car canvas view to follow the car, keeping it centered
   carCtx.translate(0, -bestCar.y + carCanvas.height * 0.7);
 
@@ -194,6 +209,17 @@ function animate(time) {
   }
   carCtx.globalAlpha = 1;
   bestCar.draw(carCtx, true);
+
+  carCtx.restore();
+
+  // Display running cars count
+  const runningCars = cars.filter((c) => !c.damaged && c.speed != 0).length  
+  carCtx.fillStyle = "darkgrey";
+  carCtx.font = "bold 24px Arial";
+  carCtx.textAlign = "center";
+  carCtx.textBaseline = "top";
+  carCtx.fillText(`Cars still running: ${runningCars}/${cars.length}`, carCanvas.width / 2, 20);
+
   // Animate the network visualization by adjusting the line dash offset
   networkCtx.lineDashOffset = -time / 20;
 

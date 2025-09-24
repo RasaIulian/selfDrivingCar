@@ -13,14 +13,12 @@ let cars;
 const carsNumberInput = document.getElementById("carsNumber");
 const carsNumberValueSpan = document.getElementById("carsNumberValue");
 
-
 // prevent 0 or smaller values typed
-carsNumberInput.addEventListener('input', () => {
-    if (carsNumberInput.value < 1) {
-      carsNumberInput.value = 1;
-    }
-  });
-
+carsNumberInput.addEventListener("input", () => {
+  if (carsNumberInput.value < 1) {
+    carsNumberInput.value = 1;
+  }
+});
 
 const mutationLevelInput = document.getElementById("networkMutation");
 
@@ -30,12 +28,11 @@ let carsNumber = parseInt(carsNumberInput.value) ?? 500;
 let mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
 
 // prevent negative values typed
-mutationLevelInput.addEventListener('input', () => {
-    if (mutationLevelInput.value < 0) {
-      mutationLevelInput.value = 0;
-    }
-  });
-
+mutationLevelInput.addEventListener("input", () => {
+  if (mutationLevelInput.value < 0) {
+    mutationLevelInput.value = 0;
+  }
+});
 
 mutationLevelInput.addEventListener("input", () => {
   mutationLevel = parseFloat(mutationLevelInput.value) ?? 30;
@@ -45,7 +42,6 @@ mutationLevelInput.addEventListener("input", () => {
   );
 });
 
-
 // Create 2D drawing contexts for both canvases
 const carCtx = carCanvas.getContext("2d");
 const networkCtx = networkCanvas.getContext("2d");
@@ -53,9 +49,9 @@ const networkCtx = networkCanvas.getContext("2d");
 // Initialize the road with the center and width (95% of the canvas width)
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
-// Add at the top with other constants
+//  car images
 const carImages = ["img/car.png", "img/car3.png"];
-let currentCarIndex = 0;
+let currentCarIndex = parseInt(localStorage.getItem("carImage")) || 0;
 
 // Generate cars based on AI state
 function generateCars(N) {
@@ -89,6 +85,16 @@ let N = carsNumber;
 cars = generateCars(N);
 let bestCar = cars[0]; // Initialize bestCar
 
+// Function to set car image for all non-dummy cars
+function setCarImage(index) {
+  if (carImages[index]) {
+    cars.forEach((car) => {
+      if (car.controlType !== "DUMMY") {
+        car.changeImage(carImages[index]);
+      }
+    });
+  }
+}
 // Event listeners to update values on change
 carsNumberInput.addEventListener("input", () => {
   carsNumber = parseInt(carsNumberInput.value) ?? 500; // Update and default to 500 if empty
@@ -98,6 +104,9 @@ carsNumberInput.addEventListener("input", () => {
     `Cars number set to: ${carsNumber}. <br>Press retry to update app.`
   );
 });
+
+// Set initial car image on load
+setCarImage(currentCarIndex);
 
 // Add a "dummy" traffic car in lane 2 at a certain position with slower speed
 const traffic = [
@@ -119,13 +128,15 @@ function save() {
 function deleteData() {
   const keysToDelete = ["carBrain" /*, "carsNumber", "mutationLevel"*/];
 
-   keysToDelete.forEach((key) => {
+  keysToDelete.forEach((key) => {
     // Check if the item exists before trying to remove it
     if (localStorage.getItem(key)) {
       localStorage.removeItem(key);
-      console.log(`${key} deleted from localStorage.` + (key === "carBrain" ? ' New training needed on reload.' : ''));
+      console.log(
+        `${key} deleted from localStorage.` +
+          (key === "carBrain" ? " New training needed on reload." : "")
+      );
     }
-    
   });
 }
 
@@ -157,22 +168,18 @@ function updateCarControls() {
   });
 }
 
-// change car Img  
+// change car Img
 function changeCar() {
   currentCarIndex = (currentCarIndex + 1) % carImages.length;
-  cars.forEach((car) => {
-    if (car.controlType !== "DUMMY") {
-      car.changeImage(carImages[currentCarIndex]);
-    }
-  });
-  // traffic.forEach((car) => {
-  //   car.changeImage(carImages[currentCarIndex]);
-  // });
+  setCarImage(currentCarIndex);
+  localStorage.setItem("carImage", currentCarIndex);
+  console.log(
+    `Car changed to ${currentCarIndex}: ${carImages[currentCarIndex]}.`
+  );
 }
 
 // Function to handle animation and updates
 function animate(time) {
-  
   updateCarControls();
   // Update the position of traffic cars
   for (let i = 0; i < traffic.length; i++) {
@@ -213,12 +220,16 @@ function animate(time) {
   carCtx.restore();
 
   // Display running cars count
-  const runningCars = cars.filter((c) => !c.damaged && c.speed != 0).length  
+  const runningCars = cars.filter((c) => !c.damaged && c.speed != 0).length;
   carCtx.fillStyle = "darkgrey";
   carCtx.font = "bold 24px Arial";
   carCtx.textAlign = "center";
   carCtx.textBaseline = "top";
-  carCtx.fillText(`Cars still running: ${runningCars}/${cars.length}`, carCanvas.width / 2, 20);
+  carCtx.fillText(
+    `Cars still running: ${runningCars}/${cars.length}`,
+    carCanvas.width / 2,
+    20
+  );
 
   // Animate the network visualization by adjusting the line dash offset
   networkCtx.lineDashOffset = -time / 20;

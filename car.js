@@ -66,8 +66,7 @@ class Car {
     };
   }
 
-
-  // Change car img and update maxSpeed 
+  // Change car img and update maxSpeed
   changeImage(newSrc) {
     this.img.src = newSrc;
     const normalCtx = this.normalMask.getContext("2d");
@@ -79,14 +78,13 @@ class Car {
       // originalConsoleLog(`Car image changed: ${newSrc} for type: ${this.controlType}`); // Use originalConsoleLog if you don't want this in the infoBox
 
       // --- Speed Update Logic (Only for non-DUMMY cars) ---
-      if (this.controlType !== "DUMMY") { // Check if the car is NOT a traffic car
+      if (this.controlType !== "DUMMY") {
+        // Check if the car is NOT a traffic car
         if (newSrc === "img/car3.png") {
           this.maxSpeed = 6; // Set new max speed for player/AI car3
-          console.log(`Car updated to Race Car<br> Speed increased, car training adjustments might be needed.`);
         } else {
           // Reset to initial max speed if it's not car3
           this.maxSpeed = this.initialMaxSpeed;
-          console.log(`Car updated to Standard`);
         }
       }
       // --- End Speed Update Logic ---
@@ -109,10 +107,9 @@ class Car {
     };
     // Handle potential image loading errors
     this.img.onerror = () => {
-        console.error(`Failed to load image: ${newSrc}`);
+      console.error(`Failed to load image: ${newSrc}`);
     };
   }
-
 
   // Update car position, sensor data, and check for damage
   update(roadBorders, traffic) {
@@ -160,7 +157,10 @@ class Car {
       // Avoid self-collision check if the car itself is part of the traffic array (though unlikely with current setup)
       if (this === traffic[i]) continue;
       // Check collision only if the other car has a polygon defined
-      if (traffic[i].polygon && polysIntersect(this.polygon, traffic[i].polygon)) {
+      if (
+        traffic[i].polygon &&
+        polysIntersect(this.polygon, traffic[i].polygon)
+      ) {
         return true; // Return true if a collision occurs
       }
     }
@@ -212,7 +212,6 @@ class Car {
       this.speed = -this.maxSpeed / 2;
     }
 
-
     // Apply friction to slow down the car
     if (this.speed > 0) {
       this.speed -= this.friction;
@@ -262,28 +261,27 @@ class Car {
     // Draw the car mask with the color applied
     // Check if mask has content before drawing (prevents errors if image hasn't loaded yet)
     if (currentMask.width > 0 && currentMask.height > 0) {
+      ctx.drawImage(
+        currentMask,
+        -this.width / 2,
+        -this.height / 2,
+        this.width,
+        this.height
+      );
+
+      // draw the car image (the color blends with the car's texture using multiply method)
+      ctx.globalCompositeOperation = "multiply";
+      // Check if image has loaded before drawing
+      if (this.img.complete && this.img.naturalWidth !== 0) {
         ctx.drawImage(
-          currentMask,
+          this.img,
           -this.width / 2,
           -this.height / 2,
           this.width,
           this.height
         );
-
-        // draw the car image (the color blends with the car's texture using multiply method)
-        ctx.globalCompositeOperation = "multiply";
-        // Check if image has loaded before drawing
-        if (this.img.complete && this.img.naturalWidth !== 0) {
-            ctx.drawImage(
-              this.img,
-              -this.width / 2,
-              -this.height / 2,
-              this.width,
-              this.height
-            );
-        }
+      }
     }
-
 
     ctx.restore();
   }

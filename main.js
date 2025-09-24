@@ -152,7 +152,7 @@ if (localStorage.getItem("carBrain")) {
     }
   }
 
-  console.log("Saved car loaded");
+  console.log('Saved car "brain" loaded');
 }
 
 function updateCarControls() {
@@ -173,9 +173,7 @@ function changeCar() {
   currentCarIndex = (currentCarIndex + 1) % carImages.length;
   setCarImage(currentCarIndex);
   localStorage.setItem("carImage", currentCarIndex);
-  console.log(
-    `Car changed to ${currentCarIndex}: ${carImages[currentCarIndex]}.`
-  );
+  console.log(`Car changed to ${currentCarIndex > 0 ? "race" : "standard"}.`);
 }
 
 // Function to handle animation and updates
